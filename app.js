@@ -37,5 +37,5 @@ app.use('/news', news(pool));
 app.use('/schools', schools(pool));
 app.use('/positions', positions(pool));
 app.use('/photos', photos(pool));
-
-app.listen(3000);
+var port = process.env.PORT || 3000;
+app.listen(port);
