@@ -33,8 +33,9 @@ module.exports = function(pool) {
     router.get('/:id', auth,  async (req, res) => {
         var id = req.params.id;
         var ptype = (req.query.ptype) ? parseInt(req.query.ptype) : 1;
+        var notes = (req.query.notes) ? req.query.notes === 'true': true;
         try {
-                let result = await getPerson(id, ptype);
+                let result = await getPerson(id, ptype, notes);
                 let person = result[0];
                 person.positions = await getPositions(person.id);
                 person.education = await getEducation(person.id);

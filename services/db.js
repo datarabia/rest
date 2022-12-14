@@ -24,7 +24,6 @@ module.exports = {
         let sql = 'select person.FULLNAME as spouse, person.id, '+
         ' p1.id as childid,  trim(p1.FULLNAME) as childname, p1.male as childmale from family inner join person on person.id=family.' + spouseId1 + ' INNER JOIN person AS p1 ON family.childid=p1.id '+
         ' inner join person as p2 on p2.id=family.' + spouseId2 + ' where p2.id =?  order by ' + spouseId1 + ', corder asc;'
-         console.log(sql)
          pool.query(sql, [id], (error, results) => {
           if(error){
             return reject(error);
@@ -61,9 +60,10 @@ module.exports = {
   },
     
 
-      getPerson: (id, ptype) =>{
+      getPerson: (id, ptype, notes) =>{
         return new Promise((resolve, reject)=>{
-          pool.query('select p.id, p.fullname, p.male, p.born, p.died, p.branch, p.email, p.notes FROM person p inner join ptype pt on p.id=pt.id where pt.ptype=? and p.id=?', [ptype, id], (error, results) => {
+          let notesStr = notes ? ', p.notes': '';
+          pool.query('select p.id, p.fullname, p.male, p.born, p.died, p.branch, p.email ' + notesStr + ' FROM person p inner join ptype pt on p.id=pt.id where pt.ptype=? and p.id=?', [ptype, id], (error, results) => {
                 if(error){
                     return reject(error);
                 }
